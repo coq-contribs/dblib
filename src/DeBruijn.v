@@ -1485,9 +1485,14 @@ Ltac prove_traverse_identifies_var :=
   reflexivity.
 
 Ltac prove_traverse_var_injective :=
+  intros ? ?;
+  let t1 := fresh "t1" in
+  intro t1; induction t1;
   let t2 := fresh "t2" in
-  intros ? ? t1; induction t1; intro t2; destruct t2; simpl;
-  intros ? h; inversion h;
+  intro t2; destruct t2; simpl;
+  intros ?;
+  let h := fresh "h" in
+  intro h; inversion h;
   f_equal;
   eauto using @traverse_var_injective with typeclass_instances.
   (* The lemma [traverse_var_injective] can be useful if the [traverse]
@@ -1495,7 +1500,9 @@ Ltac prove_traverse_var_injective :=
      been proved injective. *)
 
 Ltac prove_traverse_functorial :=
-  intros ? ? t; induction t; intros;
+  intros ? ?;
+  let t := fresh "t" in
+  intro t; induction t; intros;
   (* We do not use [simpl] because it is too brutal. We just want to unfold
      the definition of [traverse], exposing a call to the user's [_traverse],
      and then perform one step of reduction, exploiting the user's definition
@@ -1507,7 +1514,9 @@ Ltac prove_traverse_functorial :=
   f_equal; eauto using @traverse_functorial with typeclass_instances.
 
 Ltac prove_traverse_relative :=
-  intros ? ? ? t; induction t; intros; subst;
+  intros ? ? ?;
+  let t := fresh "t" in
+  intro t; induction t; intros; subst;
   (* We do not use [simpl] because it is too brutal. We just want to unfold
      the definition of [traverse], exposing a call to the user's [_traverse],
      and then perform one step of reduction, exploiting the user's definition
@@ -1522,7 +1531,9 @@ Ltac prove_traverse_relative :=
   eauto using @traverse_relative with f_equal omega typeclass_instances.
 
 Ltac prove_traverse_var_is_identity :=
-  intros ? ? t; induction t; intros;
+  intros ? ?;
+  let t := fresh "t" in
+  intro t; induction t; intros;
   (* We do not use [simpl] because it is too brutal. We just want to unfold
      the definition of [traverse], exposing a call to the user's [_traverse],
      and then perform one step of reduction, exploiting the user's definition
